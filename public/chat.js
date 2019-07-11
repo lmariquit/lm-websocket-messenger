@@ -2,10 +2,11 @@
 var clientSocket = io.connect('http://localhost:3000');
 
 // Query DOM
-var message = document.getElementById('message');
-var handle = document.getElementById('handle');
-var btn = document.getElementById('send');
-var output = document.getElementById('output');
+var message = document.getElementById('message'),
+	handle = document.getElementById('handle'),
+	btn = document.getElementById('send'),
+	output = document.getElementById('output'),
+	feedback = document.getElementById('feedback');
 
 // Emit events
 btn.addEventListener('click', function() {
@@ -15,7 +16,17 @@ btn.addEventListener('click', function() {
 	});
 });
 
+message.addEventListener('keydown', function() {
+	clientSocket.emit('typing', handle.value);
+});
+
 // Listen for events
 clientSocket.on('chat', function(data) {
-	output.innerHTML += `<p><strong>${data.handle}:</strong> ${data.message}</p>`
+	output.innerHTML += `<p><strong>${data.handle}:</strong> ${data.message}</p>`;
+	feedback.innerHTML = ``;
+
 });
+
+clientSocket.on('typing', function(data) {
+	feedback.innerHTML += `<p><em>${data} is typing...</em></p>`;
+})

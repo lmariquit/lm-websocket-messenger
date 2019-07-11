@@ -19,10 +19,16 @@ io.on('connection', function(socket) {
 	console.log(`--> Server has made socket connection!! <--
 		
 		${socket.id}
-
 			^^^^^^^^^^^^`);
 
+
+	// Handle chat event
 	socket.on('chat', function(data) {
-		io.sockets.emit('chat', data)
+		io.sockets.emit('chat', data);
+	});
+
+	// typing chat event
+	socket.on('typing', function(data) {
+		socket.broadcast.emit('typing', data);
 	});
 });
