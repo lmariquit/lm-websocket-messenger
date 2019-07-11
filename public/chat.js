@@ -52,7 +52,8 @@ clickEventEmitterFnc()
 clientSocket.on('chat', function(data) {
 	output.innerHTML += `<p><strong>${data.handle}:</strong> ${data.message}</p>`;
 	feedback.innerHTML = ``;
-
+	// output.scrollTop = output.scrollheight;
+	feedback.scrollIntoView()
 });
 
 clientSocket.on('typing', function(data) {
