@@ -20,5 +20,9 @@ io.on('connection', function(socket) {
 		
 		${socket.id}
 
-			^^^^^^^^^^^^`)
+			^^^^^^^^^^^^`);
+
+	socket.on('chat', function(data) {
+		io.sockets.emit('chat', data)
+	});
 });
