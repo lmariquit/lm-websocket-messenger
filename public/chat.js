@@ -9,19 +9,44 @@ var message = document.getElementById('message'),
 	feedback = document.getElementById('feedback');
 
 // Emit events
-btn.addEventListener('click', function() {
-	clientSocket.emit('chat', {
-		message: message.value,
-		handle: handle.value
+function clickEventEmitterFnc () {
+	btn.addEventListener('click', function() {
+		clientSocket.emit('chat', {
+			message: message.value,
+			handle: handle.value
+		});
+		message.blur();
+		var newElement = document.createElement('input');
+		newElement.id = "message";
+		newElement.type = "text";
+		newElement.placeholder = "MESSAGE";
+		message.removeEventListener('keyup', messageListener)
+		message.parentNode.replaceChild(newElement, message);
+		message = document.getElementById('message');
+		messageEventEmitterFnc()
+		message.focus();
 	});
-});
+}
 
-message.addEventListener('keyup', function() {
+function messageEventEmitterFnc() {
+	message.addEventListener('keyup', messageListener);
+}
+
+function messageListener(event) {
+	if (event.keyCode === 13) {
+		event.preventDefault();
+		btn.click();
+		return
+	};
+
 	clientSocket.emit('typing', {
 		handle: handle.value,
 		message: message.value
 	});
-});
+}
+
+messageEventEmitterFnc()
+clickEventEmitterFnc()
 
 // Listen for events
 clientSocket.on('chat', function(data) {
