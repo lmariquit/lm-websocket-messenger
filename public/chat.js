@@ -16,8 +16,11 @@ btn.addEventListener('click', function() {
 	});
 });
 
-message.addEventListener('keydown', function() {
-	clientSocket.emit('typing', handle.value);
+message.addEventListener('keyup', function() {
+	clientSocket.emit('typing', {
+		handle: handle.value,
+		message: message.value
+	});
 });
 
 // Listen for events
@@ -28,5 +31,10 @@ clientSocket.on('chat', function(data) {
 });
 
 clientSocket.on('typing', function(data) {
-	feedback.innerHTML = `<p><em>${data} is typing...</em></p>`;
+	console.log(`THE MESSAGE SPACE: ${message.innerHTML}`)
+	if (data.message) {
+		feedback.innerHTML = `<p><em>${data.handle} is typing...</em></p>`;
+	} else {
+		feedback.innerHTML = ``;
+	};
 })
