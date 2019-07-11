@@ -17,7 +17,8 @@ var io = socket(server);
 
 io.on('connection', function(socket) {
 	console.log(`--> Server has made socket connection!! <--
+		
 		${socket.id}
 
-		`)
+			^^^^^^^^^^^^`)
 });
